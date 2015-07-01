@@ -3,20 +3,20 @@
 # HalfDollar.js
 
 ```
-                                             E
-                                          .x+E:..
-      oe         !$F   .--~*teu.        u$~  E  'b.
-    .@$$         $$'  dF     $$$Nx     t$E   E d$$$>
-==*$$$$$        :$$  d$$$b   '$$$$>    $$N.  E'$$$$~
-   $$$$$       .$$F  ?$$$$>  $$$$$F    $$$$$b&.'""'
-   $$$$$       :$$'   "**"  x$$$$$~    '$$$$$$$$e.
-   $$$$$       $$F         d$$$$*'      "*$$$$$$$N
-   $$$$$      .$$'       z$**"'   :     uu. ^$*$$$$E
-   $$$$$      d$F      :?.....  ..F    @$$$L E '"$$E
-   $$$$$     .$$      <""$$$$$$$$$~   '$$$$~ E   $$~
-   $$$$$     d$F      $:  "$$$$$$*     '*.   E  .*"
-'**%%%%%%** :$$       ""    "**"'        '~==R=~'
-                                             E
+                                            H
+                                         .x+H:..
+      oH         !$F   .--~*tHu.       u$~  H  'b.
+    .@$$         $$'  dF     $$$Nx    t$H   H d$$$>
+==*$$$$$        :$$  d$$$b   '$$$$>   $$N.  H'$$$$~
+   $$$$$       .$$F  ?$$$$>  $$$$$F   $$$$$bH.'""'
+   $$$$$       :$$'   "**"  x$$$$$~   '$$$$$$$H.
+   $$$$$       $$F         d$$$$*'     "*$$$$$$$N
+   $$$$$      .$$'       z$**"'   :    uu. ^$*$$$$H
+   $$$$$      d$F      :?.....  ..F   @$$$L H '"$$H
+   $$$$$     .$$      <""$$$$$$$$$~  '$$$$~ H   $$~
+   $$$$$     d$F      $:' "$$$$$$*    '*.   H  .*"
+'**%%%%%%** :$$       ""    "**"'       '~==H=~'
+                                            H
 ```
 
 *A micro replacement for jQuery using modern browser methods.*
@@ -27,7 +27,7 @@ With HalfDollar.js, you can use the familiar jQuery API in modern browsers, but 
 
 **Target:** IE9+ and last 2 browser versions
 
-*Inspired by the brilliant http://youmightnotneedjquery.com/*
+*Inspired by the brilliant [youmightnotneedjquery.com](http://youmightnotneedjquery.com)*
 
 ## How To Use
 
@@ -42,12 +42,10 @@ If you need support for older browsers like IE8, fallback to jQuery v1! Use Goog
 ```html
 <script src="js/HalfDollar.min.js">
 <script>
-(function(Half$,s,u){
-if ( !Half$ ) { 
+(function(half$,s,u){ if ( !half$ ) { 
   var sc = document.createElement(s); sc.src = u;
   var f = document.getElementsByTagName(s)[0]; f.parentNode.insertBefore(sc, f);
-}
-}(window.Half$,'script','https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'));
+} }(window.half$,'script','https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'));
 </script>
 ```
 Be sure to wrap your code in a DOM ready call `$(function(){ ... });` and HalfDollar.js will queue up your code until the fallback loads. Plugins declared via `$.fn.extend` should also be added to jQuery after it loads.
@@ -59,5 +57,16 @@ HalfDollar.js tries to provide API compatibility without becoming bloated. All m
 
 ## To Do
 
-[ ] Better addToDom methods
-[ ] 
+- [ ] .css
+- [ ] .filter
+- [ ] .is
+- [ ] .makeArray, .toArray
+- [ ] .map, .slice
+- [ ] .val
+- [ ] .trigger
+- [ ] Separate modules and allow for custom builds
+- [ ] .insertBefore, .insertAfter ?
+- [ ] .parents ?
+- [ ] .next, .prev ?
+- [ ] .siblings ?
+- [ ] .scrollLeft, .scrollTop ?

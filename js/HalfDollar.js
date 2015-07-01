@@ -1,34 +1,25 @@
-/*! HalfDollar.js, https://github.com/shshaw/HalfDollar.js */
+/*! HalfDollar.js, https://github.com/shshaw/HalfDollar.js | @license */
 /*
-                                             E
-                                          .x+E:..
-      oe         !$F   .--~*teu.        u$~  E  'b.
-    .@$$         $$'  dF     $$$Nx     t$E   E d$$$>
-==*$$$$$        :$$  d$$$b   '$$$$>    $$N.  E'$$$$~
-   $$$$$       .$$F  ?$$$$>  $$$$$F    $$$$$b&.'""'
-   $$$$$       :$$'   "**"  x$$$$$~    '$$$$$$$$e.
-   $$$$$       $$F         d$$$$*'      "*$$$$$$$N
-   $$$$$      .$$'       z$**"'   :     uu. ^$*$$$$E
-   $$$$$      d$F      :?.....  ..F    @$$$L E '"$$E
-   $$$$$     .$$      <""$$$$$$$$$~   '$$$$~ E   $$~
-   $$$$$     d$F      $:  "$$$$$$*     '*.   E  .*"
-'**%%%%%%** :$$       ""    "**"'        '~==R=~'
-                                             E
+                                            H
+                                         .x+H:..
+      oH         !$F   .--~*tHu.       u$~  H  'b.
+    .@$$         $$'  dF     $$$Nx    t$H   H d$$$>
+==*$$$$$        :$$  d$$$b   '$$$$>   $$N.  H'$$$$~
+   $$$$$       .$$F  ?$$$$>  $$$$$F   $$$$$bH.'""'
+   $$$$$       :$$'   "**"  x$$$$$~   '$$$$$$$H.
+   $$$$$       $$F         d$$$$*'     "*$$$$$$$N
+   $$$$$      .$$'       z$**"'   :    uu. ^$*$$$$H
+   $$$$$      d$F      :?.....  ..F   @$$$L H '"$$H
+   $$$$$     .$$      <""$$$$$$$$$~  '$$$$~ H   $$~
+   $$$$$     d$F      $:' "$$$$$$*    '*.   H  .*"
+'**%%%%%%** :$$       ""    "**"'       '~==H=~'
+                                            H
 
  A micro replacement for jQuery, using modern browser methods.
 */
 
 ;(function(window,document,undefined){
   'use strict';
-
-  function onReady(fn) {
-    if ( document.readyState !== 'loading' ) { fn(); }
-    else { document.addEventListener('DOMContentLoaded', fn); }
-  }
-
-  var isFunction = (function(type){
-      return function(item) { return typeof item === type; };
-    }(typeof function(){}));
 
   function extend(target) {
     target = target || {};
@@ -50,6 +41,15 @@
 
     return target;
   }
+
+  function onReady(fn) {
+    if ( document.readyState !== 'loading' ) { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+
+  var isFunction = (function(type){
+      return function(item) { return typeof item === type; };
+    }(typeof function(){}));
 
   // If the browser doesn't have the necessary methods, allow for a fallback to jQuery.
   if ( !('querySelectorAll' in document) && !('addEventListener' in window) ) {
@@ -112,8 +112,8 @@
         length;
 
     // If function, use as shortcut for DOM ready
-    if ( Half$.isFunction(selector) ) { onReady(selector); return this; }
-    else if ( Half$.isString(selector) ) {
+    if ( half$.isFunction(selector) ) { onReady(selector); return this; }
+    else if ( half$.isString(selector) ) {
       // If an ID use the faster getElementById check
       if ( match && match[2]  ) { selector = document.getElementById(match[2]); }
       // If HTML, parse it into real elements, else use querySelectorAll
@@ -135,35 +135,17 @@
     return this;
   }
 
-  function Half$(selector,context) {
+  function half$(selector,context) {
     return new Init(selector,context);
   }
 
-////////////////////////////////////////
-// Util functions
-
-
-/*
-  Half$.extend = function(first, second){
-    var target = first || {};
-    if ( !second ) {
-      target = this;
-      second = first;
-    }
-    for (var prop in second) {
-      if ( second[prop] !== undefined ) { target[prop] = second[prop]; }
-    }
-    return target;
-  };
-*/
-
-  Half$.extend = extend;
+  half$.extend = extend;
 
 
 ////////////////////////////////////////
 // Type checks
 
-  Half$.extend({
+  half$.extend({
 
     each: function(obj,callback){
       if ( arguments.length === 1) {
@@ -189,50 +171,27 @@
     },
 
     noop: function(){},
+    now: Date.now,
 
     type: function(obj) { return typeof obj; },
-
-    is$: function(obj){ return obj instanceof Half$; },
-
-    isNumeric: function(n) {
-      return !isNaN(parseFloat(n)) && isFinite(n);
-    },
-
+    is$: function(obj){ return obj instanceof half$; },
+    isNumeric: function(n) { return !isNaN(parseFloat(n)) && isFinite(n); },
+    isArray: Array.isArray,
+    isFunction: isFunction,
     isString: (function(type){
       return function(item) { return typeof item === type; };
-    }(typeof "")),
-
-    isArray: Array.isArray,
-
-    isFunction: isFunction
+    }(typeof ""))
 
   });
-
-/*
-  Half$.map = function(obj,callback){
-    var length = obj.length,
-        i = 0;
-
-    for(; i < length; i++){}
-  };
-
-  Half$.merge = function( first, second ) {
-    var len = +second.length,
-      j = 0,
-      i = first.length;
-    for ( ; j < len; j++ ) { first[ i++ ] = second[ j ]; }
-    first.length = i;
-    return first;
-  };
-*/
 
 
 ////////////////////////////////////////
 // Functions to pass to each instance
 
-  Half$.fn = Init.prototype = Half$.prototype = {
+  half$.fn = Init.prototype = half$.prototype = {
+
     version: 0.1,
-    constructor: Half$,
+    constructor: half$,
 
     // Array-like necessities
     length: 0,
@@ -243,9 +202,9 @@
 
     concat: function(){
       var _this = this;
-      Half$.each(arguments,function(){
-        if ( Half$.isArray(this) ) {
-          Half$.each(this,function(){ _this.push(this); });
+      half$.each(arguments,function(){
+        if ( half$.isArray(this) ) {
+          half$.each(this,function(){ _this.push(this); });
         } else {
           _this.push(this);
         }
@@ -253,21 +212,17 @@
       return this;
     },
 
-    each: Half$.each,
-    extend: Half$.extend,
-/*
-    each: function(callback){
-      return Half$.each(this,callback);
-    },
-*/
+    each: half$.each,
+    extend: half$.extend,
+
     get: function(index) {
       if ( index === undefined ) { return slice.call(this); }
       return ( index < 0 ? this[index + this.length] : this[index] );
     },
-
-    eq: function(index) { return Half$(this.get(index)); },
+    eq: function(index) { return half$(this.get(index)); },
     first: function(){ return this.eq(0); },
     last: function(){ return this.eq(-1); }
+
   };
 
 
@@ -275,13 +230,13 @@
 ////////////////////////////////////////
 // Classes
 
-  Half$.fn.extend({
+  half$.fn.extend({
 
     addClass: function(c){
       var classes = c.split(' '),
           obj = this;
 
-      Half$.fn.each(classes,function(i,c){
+      half$.fn.each(classes,function(i,c){
         obj.each(function(){
           if (this.classList) {
             this.classList.add(c);
@@ -298,7 +253,7 @@
       var classes = c.split(' '),
           obj = this;
 
-      Half$.fn.each(classes,function(i,c){
+      half$.fn.each(classes,function(i,c){
         obj.each(function(){
           if (this.classList) {
             this.classList.remove(c);
@@ -332,26 +287,23 @@
       });
       return check;
     }
+
   });
 
 
 ////////////////////////////////////////
 // Attributes
 
-  Half$.fn.extend({
+  half$.fn.extend({
+
     attr: function(attrName, value){
       if ( arguments.length === 1 ) { return this[0].getAttribute(attrName); }
       else if ( value === undefined ) { return this; }
-
-      return this.each(function(){
-        this.setAttribute(attrName,value);
-      });
+      return this.each(function(){ this.setAttribute(attrName,value); });
     },
 
     removeAttr: function(attrName){
-      return this.each(function(){
-        this.removeAttribute(attrName);
-      });
+      return this.each(function(){ this.removeAttribute(attrName); });
     },
 
     data: function(){
@@ -359,26 +311,27 @@
       return this.attr.apply(this,arguments); //this.attr('data-'+key,value);
     },
 
+    removeData: function(){
+      arguments[0] = 'data-' + arguments[0];
+      return this.removeAttr.apply(this,arguments); //this.attr('data-'+key,value);
+    },
+
     prop: function(propName, value){
       if ( arguments.length === 1 ) { return this[0][propName]; }
-
-      return this.each(function(){
-        this[propName] = value;
-      });
+      return this.each(function(){ this[propName] = value; });
     },
 
     removeProp: function(propName) {
-      return this.each(function(){
-        delete this[propName];// = undefined
-      });
+      return this.each(function(){ delete this[propName]; });
     }
+
   });
 
 
 ////////////////////////////////////////
 // Content / DOM manipulation
 
-  Half$.fn.extend({
+  half$.fn.extend({
 
     html: function(content){
       if ( arguments.length === 0 ) { return this[0].innerHTML; }
@@ -394,13 +347,13 @@
 
     append: function(content){
 
-      if ( Half$.isString(content) ) {
+      if ( half$.isString(content) ) {
         return this.each(function(){ this.insertAdjacentHTML('beforeend',content); });
       }
 
       if ( content.length && content.length > 1 ) {
         var _this = this;
-        Half$.each(content,function(){ _this.append(this); });
+        half$.each(content,function(){ _this.append(this); });
         return this;
       } else if ( content.length ) {
         content = content[0];
@@ -414,13 +367,13 @@
 
     prepend: function(content){
 
-      if ( Half$.isString(content) ) {
+      if ( half$.isString(content) ) {
         return this.each(function(){ this.insertAdjacentHTML('afterbegin',content); });
       }
 
       if ( content.length && content.length > 1 ) {
         var _this = this;
-        Half$.each(content,function(){ _this.prepend(this); });
+        half$.each(content,function(){ _this.prepend(this); });
         return this;
       } else if ( content.length ) {
         content = content[0];
@@ -453,11 +406,11 @@
 ////////////////////////////////////////
 // Traversal
 
-  Half$.fn.extend({
+  half$.fn.extend({
 
-    // Find children
+    // Find decendents by selector
     find: function(selector){
-      var $elems = Half$();
+      var $elems = half$();
       if ( !selector ) { return $elems; }
 
       this.each(function(){
@@ -467,9 +420,23 @@
       return $elems;
     },
 
+    // Get children, optionally filtered by selector
+    children: function(selector){
+      var $elems = half$();
+
+      this.each(function(){
+        half$.each(this.children,function(){
+          if ( selector && !matches(this,selector) ) { return true; }
+          $elems.push(this);
+        });
+      });
+
+      return $elems;
+    },
+
     // Get parent, optionally filtered by selector
     parent: function(selector){
-      var $elems = Half$();
+      var $elems = half$();
 
       this.each(function(){
         var parent = this.parentNode;
@@ -478,27 +445,15 @@
       });
 
       return $elems;
-    },
-
-    children: function(selector){
-      var $elems = Half$();
-
-      this.each(function(){
-        Half$.each(this.children,function(){
-          if ( selector && !matches(this,selector) ) { return true; }
-          $elems.push(this);
-        });
-      });
-
-      return $elems;
     }
+
   });
 
 
 ////////////////////////////////////////
 // Show/Hide, non-animated
 
-  Half$.fn.extend({
+  half$.fn.extend({
 
     hide: function(){
       return this.each(function(){ this.style.display = 'none'; });
@@ -507,13 +462,14 @@
     show: function(){
       return this.each(function(){ this.style.display = ''; });
     }
+
   });
 
 
 ////////////////////////////////////////
 // Events
 
-  Half$.fn.extend({
+  half$.fn.extend({
 
     on: function(event,callback){
       return this.each(function(){
@@ -537,21 +493,15 @@
       });
     }
 
-/*
-    click: function(callback){
-      return this.on('click',callback);
-    }
-*/
-
   });
 
 
 ////////////////////////////////////////
 // Clone
 
-  Half$.fn.extend({
+  half$.fn.extend({
     clone: function(){
-      var $elems = Half$();
+      var $elems = half$();
       this.each(function(){
         $elems.push(this.cloneNode(true));
       });
@@ -564,7 +514,7 @@
 // Get Width / Height
 
 
-  Half$.fn.extend({
+  half$.fn.extend({
 
     height: function(){ return this[0].clientHeight; },
     outerHeight: function(){ return this[0].offsetHeight; },
@@ -577,7 +527,7 @@
 ////////////////////////////////////////
 // Offset & Position
 
-  Half$.fn.extend({
+  half$.fn.extend({
 
     position: function(){
       var el = this[0];
@@ -596,7 +546,8 @@
       };
     },
 
-    offsetParent: function(){ return Half$(this[0].offsetParent); }
+    offsetParent: function(){ return half$(this[0].offsetParent); }
+
   });
 
 
@@ -646,14 +597,15 @@
     return request;
   }
 
-  Half$.extend({
+  half$.extend({
+
     ajax: function(url,opts){
       if ( arguments.length === 1 ) { opts = arguments[0]; }
       else { opts.url = url || opts.url; }
       return ajaxRequest(opts);
     },
 
-    get: Half$.ajax,
+    get: half$.ajax,
 
     post: function(url,data,success,dataType){
       var opts = {};
@@ -669,18 +621,19 @@
       opts.method = 'POST';
       return ajaxRequest(opts);
     }
+
   });
 
 ////////////////////////////////////////
-// noConflict to remove Half$ if the original $ is needed;
+// noConflict to remove half$ if the original $ is needed;
   var _$ = window.$;
 
-  Half$.noConflict = function(){
-    if ( window.$ === Half$ ) { window.$ = _$; }
-    return Half$;
+  half$.noConflict = function(){
+    if ( window.$ === half$ ) { window.$ = _$; }
+    return half$;
   };
 
-  // Set Half$ up in the global space to be used by other scripts
-  window.$ = window.Half$ = Half$;
+  // Set half$ up in the global space to be used by other scripts
+  window.$ = window.half$ = half$;
 
 }(window,document));
