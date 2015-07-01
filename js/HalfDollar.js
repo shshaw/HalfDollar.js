@@ -90,10 +90,6 @@
     return slice.call(elems);
   }
 
-  function matches(el, selector) {
-    return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
-  }
-
   function parseHTML(str) {
     var tmp = document.implementation.createHTMLDocument();
     tmp.body.innerHTML = str;
@@ -104,40 +100,40 @@
 ////////////////////////////////////////
 // Core
 
-  function Init(selector,context){
+  var Init = function(selector,context){
 
-    var match = idOrHTML.exec(selector),
-        i = 0,
-        elems,
-        length;
+      var match = idOrHTML.exec(selector),
+          i = 0,
+          elems,
+          length;
 
-    // If function, use as shortcut for DOM ready
-    if ( half$.isFunction(selector) ) { onReady(selector); return this; }
-    else if ( half$.isString(selector) ) {
-      // If an ID use the faster getElementById check
-      if ( match && match[2]  ) { selector = document.getElementById(match[2]); }
-      // If HTML, parse it into real elements, else use querySelectorAll
-      else { elems = ( match ? parseHTML(selector) : find(selector,context) ); }
-    }
+      // If function, use as shortcut for DOM ready
+      if ( half$.isFunction(selector) ) { onReady(selector); return this; }
+      else if ( half$.isString(selector) ) {
+        // If an ID use the faster getElementById check
+        if ( match && match[2]  ) { selector = document.getElementById(match[2]); }
+        // If HTML, parse it into real elements, else use querySelectorAll
+        else { elems = ( match ? parseHTML(selector) : find(selector,context) ); }
+      }
 
-    if ( !selector ) { return this; }
+      if ( !selector ) { return this; }
 
-    // If a DOM element is passed in or received via ID return the single element
-    if ( selector.nodeType ) {
-      this[0] = selector;
-      this.length = 1;
+      // If a DOM element is passed in or received via ID return the single element
+      if ( selector.nodeType ) {
+        this[0] = selector;
+        this.length = 1;
+        return this;
+      }
+
+      length = this.length = elems.length;
+      for( ; i < length; i++ ) { this[i] = elems[i]; }
+
       return this;
-    }
+    },
 
-    length = this.length = elems.length;
-    for( ; i < length; i++ ) { this[i] = elems[i]; }
-
-    return this;
-  }
-
-  function half$(selector,context) {
-    return new Init(selector,context);
-  }
+    half$ = function(selector,context) {
+      return new Init(selector,context);
+    };
 
   half$.extend = extend;
 
@@ -201,12 +197,12 @@
     map: function(callback){ return arr.map.call(this,callback,this); },
 
     concat: function(){
-      var _this = this;
+      var obj = this;
       half$.each(arguments,function(){
         if ( half$.isArray(this) ) {
-          half$.each(this,function(){ _this.push(this); });
+          half$.each(this,function(){ obj.push(this); });
         } else {
-          _this.push(this);
+          obj.push(this);
         }
       });
       return this;
@@ -238,11 +234,8 @@
 
       half$.fn.each(classes,function(i,c){
         obj.each(function(){
-          if (this.classList) {
-            this.classList.add(c);
-          } else {
-            this.className += ' ' + c;
-          }
+          if (this.classList) { this.classList.add(c); }
+          else { this.className += ' ' + c; }
         });
       });
 
@@ -255,11 +248,8 @@
 
       half$.fn.each(classes,function(i,c){
         obj.each(function(){
-          if (this.classList) {
-            this.classList.remove(c);
-          } else {
-            this.className = this.className.replace(c,'');
-          }
+          if (this.classList) { this.classList.remove(c); }
+          else { this.className = this.className.replace(c,''); }
         });
       });
 
@@ -267,12 +257,13 @@
     },
 
     toggleClass: function(c, state){
-      if ( state !== undefined ) { return this[state ? 'addClass' : 'removeClass' ](c); }
+      if ( state !== undefined ) {
+        return this[state ? 'addClass' : 'removeClass' ](c);
+      }
 
       return this.each(function(){
-        if (this.classList) {
-          this.classList.toggle(c);
-        } else {
+        if (this.classList) { this.classList.toggle(c); }
+        else {
           if ( this.className.indexOf(c) >= 0 ) { this.className.replace(c,''); }
           else { this.className += ' ' + c; }
         }
@@ -344,69 +335,78 @@
     },
 
     empty: function(){ return this.html(''); },
-
-    append: function(content){
-
-      if ( half$.isString(content) ) {
-        return this.each(function(){ this.insertAdjacentHTML('beforeend',content); });
-      }
-
-      if ( content.length && content.length > 1 ) {
-        var _this = this;
-        half$.each(content,function(){ _this.append(this); });
-        return this;
-      } else if ( content.length ) {
-        content = content[0];
-      }
-
-      return ( content.nodeType ? this.each(function(i){
-        this.appendChild(( i === 0 ? content : content.cloneNode(true) ));
-      }) : this );
-
-    },
-
-    prepend: function(content){
-
-      if ( half$.isString(content) ) {
-        return this.each(function(){ this.insertAdjacentHTML('afterbegin',content); });
-      }
-
-      if ( content.length && content.length > 1 ) {
-        var _this = this;
-        half$.each(content,function(){ _this.prepend(this); });
-        return this;
-      } else if ( content.length ) {
-        content = content[0];
-      }
-
-      return ( content.nodeType ? this.each(function(i){
-          var first = this.childNodes[0];
-          this.insertBefore(( i === 0 ? content : content.cloneNode(true) ),first);
-        }) : this );
-
-    },
-
-    remove: function(){ return this.each(function(){ this.remove(); }); },
-
-    appendTo: function(el){
-      if ( !$.is$(el) ) { el = $(el); }
-      el.append(this);
-      return this;
-    },
-
-    prependTo: function(el){
-      if ( !$.is$(el) ) { el = $(el); }
-      el.prepend(this);
-      return this;
-    }
+    remove: function(){ return this.each(function(){ this.remove(); }); }
 
   });
 
 
 ////////////////////////////////////////
-// Traversal
+// Append / Prepend
+
+  var methods = {
+      'prepend': {
+        insert: 'afterbegin',
+        dom: function(el,child){
+          var first = el.childNodes[0];
+          el.insertBefore(child,first);
+        }
+      },
+      'append': {
+        insert: 'beforeend',
+        dom: function(el,child){ el.appendChild(child); }
+      }
+    };
+
+    function insertContent(method,el,child){
+      if ( half$.isString(child) ) {
+        half$.each(el,function(){
+          this.insertAdjacentHTML(methods[method].insert,child);
+        });
+      } else if ( child.length ) {
+        half$.each(child,function(){ insertContent(method,el,this); });
+      } else if ( child.nodeType ) {
+        half$.each(el,function(i){
+          methods[method].dom(this,( i === 0 ? child : child.cloneNode(true) ));
+        });
+      }
+      return el;
+    }
 
   half$.fn.extend({
+
+    append: function(){ return insertContent('append',this,arguments); },
+    prepend: function(){ return insertContent('prepend',this,arguments); },
+
+    appendTo: function(el){ insertContent('append',el,this); return this; },
+    prependTo: function(el){ insertContent('prepend',el,this); return this; }
+
+  });
+
+
+////////////////////////////////////////
+// Filtering & Traversal
+
+  function matches(el, selector) {
+    return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
+  }
+
+  half$.fn.extend({
+
+    is: function(selector){
+      var match;
+      if ( half$.isString(selector) ) {
+        this.each(function(){
+          match = matches(this,selector);
+          return !match;
+        });
+      } else if ( selector.nodeType ) {
+        this.each(function(){
+          match = ( this === selector );
+          return !match;
+        });
+      }
+      return match;
+    },
 
     // Find decendents by selector
     find: function(selector){
@@ -415,6 +415,19 @@
 
       this.each(function(){
         $elems = $elems.concat(find(selector,this));
+      });
+
+      return $elems;
+    },
+
+    // Filter only elements that match selector
+    filter: function(selector){
+      var $elems = half$();
+      if ( !selector ) { return $elems; }
+
+      this.each(function(){
+        if ( selector && !matches(this,selector) ) { return true; }
+        $elems.push(this);
       });
 
       return $elems;
@@ -461,6 +474,70 @@
 
     show: function(){
       return this.each(function(){ this.style.display = ''; });
+    }
+
+  });
+
+////////////////////////////////////////
+// CSS
+
+
+
+  var getPrefixedProp = (function() {
+    var cache = {},
+        div = document.createElement('div'),
+        style = div.style;
+
+    var camelRegex = /(?:^\w|[A-Z]|\b\w|\s+)/g,
+        nonAlpha = /[^a-z\ ]/ig;
+
+    function camelCase(str) {
+      return str.replace(nonAlpha,' ').replace(camelRegex, function(match, index) {
+        if ( +match === 0 ) { return ''; } // or if (/\s+/.test(match)) for white spaces
+        return ( index === 0 ? match.toLowerCase() : match.toUpperCase() );
+      });
+    }
+
+    return function(prop) {
+      prop = camelCase(prop);
+      if ( cache[prop] !== undefined ) { return cache[prop]; }
+
+      var ucProp = prop.charAt(0).toUpperCase() + prop.slice(1),
+          prefixes = ["webkit", "moz", "ms"],
+          props = (prop + ' ' + (prefixes).join(ucProp + ' ') + ucProp).split(' '),
+          i = props.length;
+
+      while (i--) {
+        if ( props[i] in style ) {
+          cache[prop] = props[i];
+          return props[i];
+        }
+      }
+
+      return prop;
+    };
+  }());
+
+  console.info(getPrefixedProp('column-gap'));
+
+  half$.fn.extend({
+
+    css: function(ruleName,value){
+
+      var isString = half$.isString(ruleName);
+      if ( isString ) { ruleName = getPrefixedProp(ruleName); }
+
+      if ( arguments.length === 1 ) {
+        if ( isString ) {
+          return getComputedStyle(this[0])[ruleName];
+        } else {
+          var obj = this;
+          half$.each(ruleName,function(key){ obj.css(key,this); });
+          return obj;
+        }
+      }
+
+      return this.each(function(){ this.style[ruleName] = value; });
     }
 
   });
@@ -557,6 +634,8 @@
 
   function ajaxRequest(opts){
 
+    if ( !opts ) { return false; }
+
     if ( !opts.url ) {
       if ( opts.error ) { opts.error.call(false, 'no url'); }
       return false;
@@ -574,7 +653,6 @@
     request.onload = function() {
       var resp = request.responseText,
           status = request.status;
-
 
       if ( status >= 200 && status < 400) {
         // Success!

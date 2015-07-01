@@ -23,7 +23,7 @@
 
 There are plenty of times where manually working out bugs and fallbacks with vanilla Javascript can be painful and time consuming, but using 50kb+ worth of jQuery just isn't worth it. Creating a custom build of jQuery with only the desired modules can still leave you with a 30+kb file.
 
-With HalfDollar.js, you can use the familiar jQuery API in modern browsers, but at a fraction of the size (7kb minified, 2.3kb gzipped!). The goal is not full feature-parity, but easy DOM access without bloat.
+With HalfDollar.js, you can use the familiar jQuery API in modern browsers, but at a fraction of the size (7.7kb minified, 2.7kb gzipped!). The goal is not full feature-parity, but lightweight DOM access.
 
 **Target:** IE9+ and last 2 browser versions
 
@@ -31,16 +31,16 @@ With HalfDollar.js, you can use the familiar jQuery API in modern browsers, but 
 
 ## How To Use
 
-Simply include the minified HalfDollar.js and use it like you would the basic features of jQuery.
+Simply include the minified HalfDollar.js and use it like you would the basic features of jQuery. 
 
-```
-<script src="js/HalfDollar.min.js">
+```html
+<script src="js/HalfDollar.min.js"></script>
 ```
 
 If you need support for older browsers like IE8, fallback to jQuery v1! Use Google's Hosted Libraries or change the url to use your own local copy.
 
 ```html
-<script src="js/HalfDollar.min.js">
+<script src="js/HalfDollar.min.js"></script>
 <script>
 (function(half$,s,u){ if ( !half$ ) { 
   var sc = document.createElement(s); sc.src = u;
@@ -57,13 +57,14 @@ HalfDollar.js tries to provide API compatibility without becoming bloated. All m
 
 ## To Do
 
-- [ ] .css
-- [ ] .filter
-- [ ] .is
-- [ ] .makeArray, .toArray
-- [ ] .map, .slice
+- [x] .css
+- [x] .filter
+- [x] .is
 - [ ] .val
 - [ ] .trigger
+- [ ] .makeArray, .toArray
+- [ ] .map, .slice
+- [ ] fully test AJAX implementation
 - [ ] Separate modules and allow for custom builds
 - [ ] .insertBefore, .insertAfter ?
 - [ ] .parents ?
