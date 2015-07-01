@@ -314,6 +314,12 @@
 
     removeProp: function(propName) {
       return this.each(function(){ delete this[propName]; });
+    },
+
+    val: function(value){
+      var ar = slice.call(arguments);
+      ar.unshift('value');
+      return this.prop.apply(this,ar);
     }
 
   });

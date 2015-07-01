@@ -25,7 +25,7 @@ There are plenty of times where manually working out bugs and fallbacks with van
 
 With HalfDollar.js, you can use the familiar jQuery API in modern browsers, but at a fraction of the size (7.7kb minified, 2.7kb gzipped!). The goal is not full feature-parity, but lightweight DOM access.
 
-**Target:** IE9+ and last 2 browser versions
+**Browser Support:** IE9+ and last 2 browser versions
 
 *Inspired by the brilliant [youmightnotneedjquery.com](http://youmightnotneedjquery.com)*
 
@@ -53,14 +53,75 @@ Be sure to wrap your code in a DOM ready call `$(function(){ ... });` and HalfDo
 
 ## API
 
-HalfDollar.js tries to provide API compatibility without becoming bloated. All methods are generally compatible with jQuery's, but may have a few missing features. 
+HalfDollar.js tries to provide API compatibility where possible. Edge cases and more complex features may be missing or incomplete. 
+
+### Traversing
+- *each*
+- *get*
+- *eq*
+- *first*
+- *last*
+- *clone*
+- *is*
+- *find*
+- *filter*
+- *children*
+- *parent*
+
+### CSS
+- *css*
+- *addClass*
+- *removeClass*
+- *toggleClass*
+- *hasClass*
+
+### Attributes
+- *attr*
+- *removeAttr*
+- *data*
+- *removeData*
+- *prop*
+- *removeProp*
+
+### Dimensions
+- *height*
+- *outerHeight*
+- *width*
+- *outerWidth*
+
+### Offset
+- *position*
+- *offset*
+- *offsetParent*
+
+### DOM Insertion/Manipulation
+- *html*
+- *text*
+- *empty*
+- *remove*
+- *append*
+- *prepend*
+- *appendTo*
+- *prependTo*
+- *hide*
+- *show*
+
+### Events
+- *on*
+- *off*
+- *one*
+
+### AJAX
+- *$.ajax*
+- *$.get*
+- *$.post*
 
 ## To Do
 
 - [x] .css
 - [x] .filter
 - [x] .is
-- [ ] .val
+- [x] .val
 - [ ] .trigger
 - [ ] .makeArray, .toArray
 - [ ] .map, .slice
