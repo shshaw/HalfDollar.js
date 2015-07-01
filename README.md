@@ -123,7 +123,6 @@ HalfDollar.js tries to provide API compatibility where possible. Edge cases and 
 
 ## To Do
 
-Though 
 - [ ] .trigger
 - [ ] .makeArray, .toArray
 - [ ] .map, .slice
