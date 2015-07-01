@@ -1,0 +1,7 @@
+{
+  "name": "halfdollar.js",
+  "title": "jQuery",
+  "description": "A micro replacement for jQuery, using modern browser methods.",
+  "version": "0.0.1",
+  "devDependencies": {}
+}

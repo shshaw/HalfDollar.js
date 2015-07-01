@@ -1,2 +1,63 @@
+# WORK IN PROGRESS
+
 # HalfDollar.js
-A micro replacement for jQuery using modern browser methods.
+
+```
+                                             E
+                                          .x+E:..
+      oe         !$F   .--~*teu.        u$~  E  'b.
+    .@$$         $$'  dF     $$$Nx     t$E   E d$$$>
+==*$$$$$        :$$  d$$$b   '$$$$>    $$N.  E'$$$$~
+   $$$$$       .$$F  ?$$$$>  $$$$$F    $$$$$b&.'""'
+   $$$$$       :$$'   "**"  x$$$$$~    '$$$$$$$$e.
+   $$$$$       $$F         d$$$$*'      "*$$$$$$$N
+   $$$$$      .$$'       z$**"'   :     uu. ^$*$$$$E
+   $$$$$      d$F      :?.....  ..F    @$$$L E '"$$E
+   $$$$$     .$$      <""$$$$$$$$$~   '$$$$~ E   $$~
+   $$$$$     d$F      $:  "$$$$$$*     '*.   E  .*"
+'**%%%%%%** :$$       ""    "**"'        '~==R=~'
+                                             E
+```
+
+*A micro replacement for jQuery using modern browser methods.*
+
+There are plenty of times where manually working out bugs and fallbacks with vanilla Javascript can be painful and time consuming, but using 50kb+ worth of jQuery just isn't worth it. Creating a custom build of jQuery with only the desired modules can still leave you with a 30+kb file.
+
+With HalfDollar.js, you can use the familiar jQuery API in modern browsers, but at a fraction of the size (7kb minified, 2.3kb gzipped!). The goal is not full feature-parity, but easy DOM access without bloat.
+
+**Target:** IE9+ and last 2 browser versions
+
+*Inspired by the brilliant http://youmightnotneedjquery.com/*
+
+## How To Use
+
+Simply include the minified HalfDollar.js and use it like you would the basic features of jQuery.
+
+```
+<script src="js/HalfDollar.min.js">
+```
+
+If you need support for older browsers like IE8, fallback to jQuery v1! Use Google's Hosted Libraries or change the url to use your own local copy.
+
+```html
+<script src="js/HalfDollar.min.js">
+<script>
+(function(Half$,s,u){
+if ( !Half$ ) { 
+  var sc = document.createElement(s); sc.src = u;
+  var f = document.getElementsByTagName(s)[0]; f.parentNode.insertBefore(sc, f);
+}
+}(window.Half$,'script','https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'));
+</script>
+```
+Be sure to wrap your code in a DOM ready call `$(function(){ ... });` and HalfDollar.js will queue up your code until the fallback loads. Plugins declared via `$.fn.extend` should also be added to jQuery after it loads.
+
+
+## API
+
+HalfDollar.js tries to provide API compatibility without becoming bloated. All methods are generally compatible with jQuery's, but may have a few missing features. 
+
+## To Do
+
+[ ] Better addToDom methods
+[ ] 
