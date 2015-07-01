@@ -1,5 +1,3 @@
-# WORK IN PROGRESS
-
 # HalfDollar.js
 
 ```
@@ -19,7 +17,7 @@
                                             H
 ```
 
-*A micro replacement for jQuery using modern browser methods.*
+*A micro alternative to jQuery using modern browser methods.*
 
 Working with vanilla Javascript can be painful and time consuming, but using 50kb+ worth of jQuery is overkill for a few DOM manipulations. Creating a custom build of jQuery with only the desired modules can still produce a 30+kb file.
 

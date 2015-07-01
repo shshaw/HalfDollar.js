@@ -15,7 +15,7 @@
 '**%%%%%%** :$$       ""    "**"'       '~==H=~'
                                             H
 
- A micro replacement for jQuery, using modern browser methods.
+ A micro alternative to jQuery using modern browser methods.
 */
 
 ;(function(window,document,undefined){
