@@ -21,9 +21,9 @@
 
 *A micro replacement for jQuery using modern browser methods.*
 
-There are plenty of times where manually working out bugs and fallbacks with vanilla Javascript can be painful and time consuming, but using 50kb+ worth of jQuery just isn't worth it. Creating a custom build of jQuery with only the desired modules can still leave you with a 30+kb file.
+Working with vanilla Javascript can be painful and time consuming, but using 50kb+ worth of jQuery is overkill for a few DOM manipulations. Creating a custom build of jQuery with only the desired modules can still produce a 30+kb file.
 
-With HalfDollar.js, you can use the familiar jQuery API in modern browsers, but at a fraction of the size (7.7kb minified, 2.7kb gzipped!). The goal is not full feature-parity, but lightweight DOM access.
+HalfDollar.js gives you most of the familiar jQuery API in modern browsers, but at a fraction of the size (7.9kb minified, 2.8kb gzipped!). The goal is not full feature-parity, but simple & lightweight DOM access.
 
 **Browser Support:** IE9+ and last 2 browser versions
 
@@ -42,13 +42,18 @@ If you need support for older browsers like IE8, fallback to jQuery v1! Use Goog
 ```html
 <script src="js/HalfDollar.min.js"></script>
 <script>
-(function(half$,s,u){ if ( !half$ ) { 
+(function(half$,s,u){ if ( !half$ ) {
   var sc = document.createElement(s); sc.src = u;
   var f = document.getElementsByTagName(s)[0]; f.parentNode.insertBefore(sc, f);
 } }(window.half$,'script','https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'));
 </script>
 ```
 Be sure to wrap your code in a DOM ready call `$(function(){ ... });` and HalfDollar.js will queue up your code until the fallback loads. Plugins declared via `$.fn.extend` should also be added to jQuery after it loads.
+
+
+## Contributing & Testing
+
+Please [submit issues](https://github.com/shshaw/HalfDollar.js/issues) and patches where fitting. Optimizations are welcome.
 
 
 ## API
@@ -82,6 +87,7 @@ HalfDollar.js tries to provide API compatibility where possible. Edge cases and 
 - *removeData*
 - *prop*
 - *removeProp*
+- *val*
 
 ### Dimensions
 - *height*
@@ -116,12 +122,10 @@ HalfDollar.js tries to provide API compatibility where possible. Edge cases and 
 - *$.get*
 - *$.post*
 
+
 ## To Do
 
-- [x] .css
-- [x] .filter
-- [x] .is
-- [x] .val
+Though 
 - [ ] .trigger
 - [ ] .makeArray, .toArray
 - [ ] .map, .slice

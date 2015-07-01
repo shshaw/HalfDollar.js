@@ -42,11 +42,6 @@
     return target;
   }
 
-  function onReady(fn) {
-    if ( document.readyState !== 'loading' ) { fn(); }
-    else { document.addEventListener('DOMContentLoaded', fn); }
-  }
-
   var isFunction = (function(type){
       return function(item) { return typeof item === type; };
     }(typeof function(){}));
@@ -55,13 +50,16 @@
   if ( !('querySelectorAll' in document) && !('addEventListener' in window) ) {
     var queue = [],
         checkjQuery = function() {
-          if ( window.jQuery ) {
-            jQuery.fn.extend(temp.fn);
-            delete temp.fn;
-            jQuery.extend(temp);
-            jQuery.each(queue,function(i,v){ v(); });
+          if (  document.readyState !== 'loading' ) {
+            document.onreadystatechange = function(){};
+            if ( window.jQuery ) {
+              jQuery.fn.extend(temp.fn);
+              delete temp.fn;
+              jQuery.extend(temp);
+              jQuery.each(queue,function(i,v){ v(); });
+            }
+            else { setTimeout(checkjQuery,200); }
           }
-          else { setTimeout(checkjQuery,200); }
         },
         temp = function(callback) {
           if ( isFunction(callback) ) { queue.push(callback); }
@@ -72,7 +70,7 @@
     temp.fn = { extend: extend };
 
     window.$ = temp;
-    onReady(checkjQuery);
+    document.onreadystatechange = checkjQuery;
     return false;
   }
 
@@ -94,6 +92,11 @@
     var tmp = document.implementation.createHTMLDocument();
     tmp.body.innerHTML = str;
     return slice.call(tmp.body.children);
+  }
+
+  function onReady(fn) {
+    if ( document.readyState !== 'loading' ) { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
   }
 
 
