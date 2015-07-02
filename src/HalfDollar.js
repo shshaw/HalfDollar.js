@@ -527,8 +527,6 @@
     };
   }());
 
-  console.info(getPrefixedProp('column-gap'));
-
   half$.fn.extend({
 
     css: function(ruleName,value){
