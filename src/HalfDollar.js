@@ -78,7 +78,7 @@
 ////////////////////////////////////////
 // Utils
 
-  var arr = [],
+  var arr = Array.prototype,
       slice = arr.slice,
       idOrHTML = /^\s*?(#([-\w]*)|<[\w\W]*>)\s*?$/;
 
@@ -103,49 +103,50 @@
 ////////////////////////////////////////
 // Core
 
-  var Init = function(selector,context){
+  function Init(selector,context){
+    var i = 0,
+        match, elems, length;
 
-      var match = idOrHTML.exec(selector),
-          i = 0,
-          elems,
-          length;
+    // If already a Half$ collection, don't do any further processing
+    if ( half$.is$(selector) ) { return selector; }
+    // If function, use as shortcut for DOM ready
+    else if ( half$.isFunction(selector) ) { onReady(selector); return this; }
+    else if ( half$.isString(selector) ) {
+      match = idOrHTML.exec(selector);
+      // If an ID use the faster getElementById check
+      if ( match && match[2]  ) { selector = document.getElementById(match[2]); }
+      // If HTML, parse it into real elements, else use querySelectorAll
+      else { elems = ( match ? parseHTML(selector) : find(selector,context) ); }
+    }
 
-      // If function, use as shortcut for DOM ready
-      if ( half$.isFunction(selector) ) { onReady(selector); return this; }
-      else if ( half$.isString(selector) ) {
-        // If an ID use the faster getElementById check
-        if ( match && match[2]  ) { selector = document.getElementById(match[2]); }
-        // If HTML, parse it into real elements, else use querySelectorAll
-        else { elems = ( match ? parseHTML(selector) : find(selector,context) ); }
-      }
+    if ( !selector ) { return this; }
 
-      if ( !selector ) { return this; }
-
-      // If a DOM element is passed in or received via ID return the single element
-      if ( selector.nodeType ) {
-        this[0] = selector;
-        this.length = 1;
-        return this;
-      }
-
+    // If a DOM element is passed in or received via ID return the single element
+    if ( selector.nodeType || selector === window ) {
+      this[0] = selector;
+      this.length = 1;
+    } else {
       length = this.length = elems.length;
       for( ; i < length; i++ ) { this[i] = elems[i]; }
+    }
 
-      return this;
-    },
+    return this;
+  }
 
-    half$ = function(selector,context) {
-      return new Init(selector,context);
-    };
+  function half$(selector,context) {
+    return new Init(selector,context);
+  }
 
-  half$.extend = extend;
+  var fn = half$.fn = half$.prototype = Init.prototype = { length: 0 };
+
+  fn.init = Init;
+  half$.extend = fn.extend = extend;
 
 
 ////////////////////////////////////////
-// Type checks
+// Utils
 
   half$.extend({
-
     each: function(obj,callback){
       if ( arguments.length === 1) {
         callback = arguments[0];
@@ -169,8 +170,15 @@
       return obj;
     },
 
+    parseHTML: parseHTML,
     noop: function(){},
-    now: Date.now,
+    now: Date.now
+  });
+
+////////////////////////////////////////
+// Utils
+
+  half$.extend({
 
     type: function(obj) { return typeof obj; },
     is$: function(obj){ return obj instanceof half$; },
@@ -185,14 +193,9 @@
 
 
 ////////////////////////////////////////
-// Functions to pass to each instance
+// Necessities
 
-  half$.fn = Init.prototype = half$.prototype = {
-
-    version: 0.1,
-    constructor: half$,
-
-    // Array-like necessities
+  fn.extend({
     length: 0,
   	splice: arr.splice,
     push: arr.push,
@@ -212,7 +215,6 @@
     },
 
     each: half$.each,
-    extend: half$.extend,
 
     get: function(index) {
       if ( index === undefined ) { return slice.call(this); }
@@ -222,20 +224,18 @@
     first: function(){ return this.eq(0); },
     last: function(){ return this.eq(-1); }
 
-  };
-
-
+  });
 
 ////////////////////////////////////////
 // Classes
 
-  half$.fn.extend({
+  fn.extend({
 
     addClass: function(c){
       var classes = c.split(' '),
           obj = this;
 
-      half$.fn.each(classes,function(i,c){
+      fn.each(classes,function(i,c){
         obj.each(function(){
           if (this.classList) { this.classList.add(c); }
           else { this.className += ' ' + c; }
@@ -249,7 +249,7 @@
       var classes = c.split(' '),
           obj = this;
 
-      half$.fn.each(classes,function(i,c){
+      fn.each(classes,function(i,c){
         obj.each(function(){
           if (this.classList) { this.classList.remove(c); }
           else { this.className = this.className.replace(c,''); }
@@ -288,7 +288,7 @@
 ////////////////////////////////////////
 // Attributes
 
-  half$.fn.extend({
+  fn.extend({
 
     attr: function(attrName, value){
       if ( arguments.length === 1 ) { return this[0].getAttribute(attrName); }
@@ -319,7 +319,7 @@
       return this.each(function(){ delete this[propName]; });
     },
 
-    val: function(value){
+    val: function(){
       var ar = slice.call(arguments);
       ar.unshift('value');
       return this.prop.apply(this,ar);
@@ -331,7 +331,7 @@
 ////////////////////////////////////////
 // Content / DOM manipulation
 
-  half$.fn.extend({
+  fn.extend({
 
     html: function(content){
       if ( arguments.length === 0 ) { return this[0].innerHTML; }
@@ -381,7 +381,7 @@
       return el;
     }
 
-  half$.fn.extend({
+  fn.extend({
 
     append: function(){ return insertContent('append',this,arguments); },
     prepend: function(){ return insertContent('prepend',this,arguments); },
@@ -399,7 +399,7 @@
     return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
   }
 
-  half$.fn.extend({
+  fn.extend({
 
     is: function(selector){
       var match;
@@ -475,7 +475,7 @@
 ////////////////////////////////////////
 // Show/Hide, non-animated
 
-  half$.fn.extend({
+  fn.extend({
 
     hide: function(){
       return this.each(function(){ this.style.display = 'none'; });
@@ -527,7 +527,7 @@
     };
   }());
 
-  half$.fn.extend({
+  fn.extend({
 
     css: function(ruleName,value){
 
@@ -553,7 +553,7 @@
 ////////////////////////////////////////
 // Events
 
-  half$.fn.extend({
+  fn.extend({
 
     on: function(event,callback){
       return this.each(function(){
@@ -583,7 +583,7 @@
 ////////////////////////////////////////
 // Clone
 
-  half$.fn.extend({
+  fn.extend({
     clone: function(){
       var $elems = half$();
       this.each(function(){
@@ -598,7 +598,7 @@
 // Get Width / Height
 
 
-  half$.fn.extend({
+  fn.extend({
 
     height: function(){ return this[0].clientHeight; },
     outerHeight: function(){ return this[0].offsetHeight; },
@@ -611,7 +611,7 @@
 ////////////////////////////////////////
 // Offset & Position
 
-  half$.fn.extend({
+  fn.extend({
 
     position: function(){
       var el = this[0];
@@ -708,6 +708,7 @@
     }
 
   });
+
 
 ////////////////////////////////////////
 // noConflict to remove half$ if the original $ is needed;
