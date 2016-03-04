@@ -1,21 +1,13 @@
-# HalfDollar.js
+# No longer maintained
 
-```
-                                            H
-                                         .x+H:..
-      oH         !$F   .--~*tHu.       u$~  H  'b.
-    .@$$         $$'  dF     $$$Nx    t$H   H d$$$>
-==*$$$$$        :$$  d$$$b   '$$$$>   $$N.  H'$$$$~
-   $$$$$       .$$F  ?$$$$>  $$$$$F   $$$$$bH.'""'
-   $$$$$       :$$'   "**"  x$$$$$~   '$$$$$$$H.
-   $$$$$       $$F         d$$$$*'     "*$$$$$$$N
-   $$$$$      .$$'       z$**"'   :    uu. ^$*$$$$H
-   $$$$$      d$F      :?.....  ..F   @$$$L H '"$$H
-   $$$$$     .$$      <""$$$$$$$$$~  '$$$$~ H   $$~
-   $$$$$     d$F      $:' "$$$$$$*    '*.   H  .*"
-'**%%%%%%** :$$       ""    "**"'       '~==H=~'
-                                            H
-```
+*Most major features from `half$` have been merged over into [`cash`](https://github.com/kenwheeler/cash). 
+
+
+## [Get `cash`](https://github.com/kenwheeler/cash)
+
+---
+
+# HalfDollar.js
 
 *A micro alternative to jQuery using modern browser methods.*
 
